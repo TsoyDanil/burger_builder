@@ -5,7 +5,7 @@ import BuildControl from './BuildControl/BuildControl'
 const BuildControls = props => {
   return (
     <div className='BuildControls'>
-      <p>Current Price: <strong>{props.price} TG</strong></p>
+      <p>Current Price: <strong>{props.price} KZT</strong></p>
       {Object.keys(props.ingredients).map(ingType => {
         return <BuildControl 
           key={ingType} 
@@ -15,6 +15,12 @@ const BuildControls = props => {
           disabledInfo={props.disabledInfo[ingType]}
         />
       })}
+      <button 
+          onClick={props.ordered}
+          className='OrderButton'
+          disabled={!props.purchasable}
+      >ORDER NOW
+      </button>
     </div>
   )
 }
