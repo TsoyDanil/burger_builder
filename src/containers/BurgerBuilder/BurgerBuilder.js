@@ -1,11 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import BuildControls from '../../components/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
 
 const BurgerBuilder = () => {
+  const navigate = useNavigate()
   const [ingredients, setIngredients] = useState({
     salad: 0,
     bacon: 0,
@@ -75,7 +77,9 @@ const BurgerBuilder = () => {
   }
 
   const purchaseContinueHandler = () => {
-    alert('You continued!')
+    const params = new createSearchParams(ingredients)
+    //salad=0&meat=0&cheese=0&bacon=0
+    navigate({pathname: '/checkout' , search: params.toString()})
   }
 
   return (
