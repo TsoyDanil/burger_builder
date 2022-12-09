@@ -5,6 +5,7 @@ import BuildControls from '../../components/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
+import {INGREDIENT_PRICES} from "../../constants/ingredients_prices";
 
 const BurgerBuilder = () => {
   const navigate = useNavigate()
@@ -18,12 +19,7 @@ const BurgerBuilder = () => {
   const [purchasable, setPurchasable] = useState(false)
   const [purchasing, setPurchasing] = useState(false)
 
-  const INGREDIENT_PRICES = {
-    salad: 50,
-    bacon: 300,
-    cheese: 200,
-    meat: 500
-  }
+
 
   const addIngredientHandler = (type) => {
     const oldCount = ingredients[type]

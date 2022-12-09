@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { NavLink, Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import { parseSearch } from "../../helper/parseSearch";
+import {INGREDIENT_PRICES} from "../../constants/ingredients_prices";
 
 
 const Checkout = () => {
@@ -14,8 +15,15 @@ const Checkout = () => {
     const checkoutCancelledHandler = () => {
         navigate(-1)
     }
+    const getTotalPrice = (ingredients) => {
+        return Object.keys(ingredients).reduce((total, ingName) => {
+            total += INGREDIENT_PRICES[ingName] * ingredients[ingName]
+            return total
+        }, 0)
+    }
     const checkoutContinuedHandler = () => {
-        navigate('contact-data', {state: {ingredients: ingredients.current}})
+        const price = getTotalPrice(ingredients.current)
+        navigate('contact-data', {state: {ingredients: ingredients.current, price}})
     }
 
     return (
