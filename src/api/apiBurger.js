@@ -1,6 +1,5 @@
 ﻿import {burgerInstance} from "./instances";
 
-
 class ApiBurger {
     getOrders = async () => {
         try {
