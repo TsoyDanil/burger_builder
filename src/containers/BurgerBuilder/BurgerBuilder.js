@@ -1,54 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import BuildControls from '../../components/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
-import {INGREDIENT_PRICES} from "../../constants/ingredients_prices";
+import { addIngredient, removeIngredient } from '../../store/ingredients.slice';
 
 const BurgerBuilder = () => {
+  const dispatch = useDispatch()
+
+
   const navigate = useNavigate()
-  const [ingredients, setIngredients] = useState({
-    salad: 0,
-    bacon: 0,
-    cheese: 0,
-    meat: 0
-  })
-  const [totalPrice, setTotalPrice] = useState(200)
+  const ingredients = useSelector(state => state.ingredients.basket)
+  const totalPrice = useSelector(state => state.ingredients.totalPrice)
+
   const [purchasable, setPurchasable] = useState(false)
   const [purchasing, setPurchasing] = useState(false)
 
-
+ 
 
   const addIngredientHandler = (type) => {
-    const oldCount = ingredients[type]
-    const updateCount = oldCount + 1
-    const updatedIngredients = {...ingredients}
-    updatedIngredients[type] = updateCount
-
-    const priceAddition = INGREDIENT_PRICES[type]
-    const newPrice = totalPrice + priceAddition
-
-    setIngredients(updatedIngredients)
-    setTotalPrice(newPrice)
-    updatePurchaseState(updatedIngredients)
+    dispatch(addIngredient(type))
   }
 
   const removeIngredientHandler = (type) => {
-    const oldCount = ingredients[type]
-    if (oldCount <= 0) return
-
-    const updateCount = oldCount - 1
-    const updatedIngredients = {...ingredients}
-    updatedIngredients[type] = updateCount
-
-    const priceAddition = INGREDIENT_PRICES[type]
-    const newPrice = totalPrice - priceAddition
-
-    setIngredients(updatedIngredients)
-    setTotalPrice(newPrice)
-    updatePurchaseState(updatedIngredients)
+    dispatch(removeIngredient(type))
   }
 
   const disabledInfo = {...ingredients}
@@ -57,13 +35,17 @@ const BurgerBuilder = () => {
     disabledInfo[key] = disabledInfo[key] <= 0
   }
 
-  const updatePurchaseState = (ingredients) => {
+  const updatePurchaseState = () => {
     const sum = Object.keys(ingredients)
       .map(igKey => ingredients[igKey])
       .reduce((sum, el) => sum + el, 0)
 
       setPurchasable(sum > 0)
   }
+
+  useEffect(() => {
+    updatePurchaseState()
+  }, [ingredients])
 
   const purchaseHandler = () => {
     setPurchasing(true)
@@ -73,9 +55,7 @@ const BurgerBuilder = () => {
   }
 
   const purchaseContinueHandler = () => {
-    const params = new createSearchParams(ingredients)
-    //salad=0&meat=0&cheese=0&bacon=0
-    navigate({pathname: '/checkout' , search: params.toString()})
+    navigate({pathname: '/checkout'})
   }
 
   return (
@@ -85,15 +65,13 @@ const BurgerBuilder = () => {
         closed={purchaseCancelHandler}
       >
         <OrderSummary 
-            ingredients={ingredients}
             price={totalPrice} 
             purchaseCancelled={purchaseCancelHandler}
             purchaseContinued={purchaseContinueHandler}
         />
       </Modal>
-      <Burger ingredients={ingredients} />
+      <Burger />
       <BuildControls 
-        ingredients={ingredients}
         price={totalPrice}
         ingredientAdded={addIngredientHandler}
         ingredientRemoved={removeIngredientHandler}

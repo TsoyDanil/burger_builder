@@ -4,10 +4,13 @@ import Button from "../../../components/UI/Button/Button";
 import {useLocation, useNavigate} from "react-router-dom";
 import {apiBurger} from "../../../api/apiBurger";
 import Spinner from "../../../components/UI/Spinner/Spinner";
+import { useSelector } from 'react-redux';
 
 const ContactData = () => {
     const navigate = useNavigate()
-    const location = useLocation()
+    const ingredients = useSelector(state => state.ingredients.basket)
+    const totalPrice = useSelector(state => state.ingredients.totalPrice)
+
     const [loading, setLoading] = useState(false)
     const [customer, setCustomer] = useState({
         name: '',
@@ -19,10 +22,9 @@ const ContactData = () => {
     const orderHandler = async (event) => {
         event.preventDefault()
         setLoading(true)
-        const {ingredients, price} = location.state
         const order = {
             ingredients: ingredients,
-            price: price,
+            price: totalPrice,
             customer: {...customer}
         }
         try {

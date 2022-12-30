@@ -16,6 +16,14 @@ class ApiBurger {
             console.log(err)
         }
     }
+    getIngredients = async() => {
+        try {
+            const response = await burgerInstance.get('/ingredients.json')
+            return response?.data
+        } catch (err) {
+            console.log(err)
+        } 
+    }
 }
 
 export const apiBurger = new ApiBurger()

@@ -1,29 +1,19 @@
 import React from "react";
-import { useRef } from "react";
-import { NavLink, Outlet, useNavigate, useSearchParams } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
-import { parseSearch } from "../../helper/parseSearch";
-import {INGREDIENT_PRICES} from "../../constants/ingredients_prices";
+import { useSelector } from "react-redux";
 
 
 const Checkout = () => {
     const navigate = useNavigate()
-    const [searchParams, setSearchParams] = useSearchParams()
-    
-    const parsed = parseSearch(searchParams)
-    const ingredients = useRef(parsed)
+
+    const ingredients = useSelector(state => state.ingredients.basket)
     const checkoutCancelledHandler = () => {
         navigate(-1)
     }
-    const getTotalPrice = (ingredients) => {
-        return Object.keys(ingredients).reduce((total, ingName) => {
-            total += INGREDIENT_PRICES[ingName] * ingredients[ingName]
-            return total
-        }, 0)
-    }
+
     const checkoutContinuedHandler = () => {
-        const price = getTotalPrice(ingredients.current)
-        navigate('contact-data', {state: {ingredients: ingredients.current, price}})
+        navigate('contact-data')
     }
 
     return (

@@ -12,16 +12,8 @@ const Ingredient = ({type}) => {
           <div className='Seeds2' />
         </div>
       )
-    case 'meat':
-      return <div className='Meat' />
-    case 'bacon':
-      return <div className='Bacon' />
-    case 'cheese':
-      return <div className='Cheese' />
-    case 'salad':
-      return <div className='Salad' />
     default:
-      return null
+      return <div className={type} />
   }
 }
 

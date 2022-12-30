@@ -4,8 +4,15 @@ import Checkout from "./containers/Checkout/Checkout";
 import ContactData from "./containers/Checkout/ContactData/ContactData";
 import Layout from "./components/Layout/Layout";
 import Orders from "./containers/Orders/Orders";
+import { getIngredients } from "./store/ingredients.slice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getIngredients())
+}, [])
   return (
     <BrowserRouter>
         <Routes>
