@@ -4,9 +4,9 @@ class ApiBurger {
     getOrders = async () => {
         try {
             const response = await burgerInstance.get('/orders.json')
-            return response.data
+            return response?.data
         } catch(err) {
-            console.log(err)
+            console.log('API BURGER ERROR **** ', err)
         }
     } 
     createOrder = async (order) => {
