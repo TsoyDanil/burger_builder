@@ -10,14 +10,22 @@ export const getIngredients = createAsyncThunk(
     }
 )
 
+export const addNewIngredient = createAsyncThunk(
+    `${namespace}/addIngredient`,
+    async (ingredient) => {
+        await apiBurger.addIngredient(ingredient)
+    }
+)
+
 export const ingredientsSlice = createSlice({
     name: namespace,
     initialState: {
-        ingredients: [],
+        ingredients: {},
         basket: {},
         totalPrice: 200,
         loading: false,
-        prices: {}
+        prices: {},
+        styles: {}
     },
     reducers: {
         addIngredient(state, action) {
@@ -26,7 +34,7 @@ export const ingredientsSlice = createSlice({
                     ...state.basket, 
                     [action.payload]: state.basket[action.payload] + 1 || 1
                 }
-                state.totalPrice += state.prices[action.payload]
+                state.totalPrice += parseInt(state.prices[action.payload])
             } catch (err) {
                 console.log(err);
             }
@@ -56,12 +64,24 @@ export const ingredientsSlice = createSlice({
         .addCase(getIngredients.fulfilled, (state, action) => {
             state.loading = false
             state.ingredients = action.payload
-            action.payload && action.payload.forEach(ing => {
-                state.basket[ing.name] = 0
+            action.payload && Object.keys(action.payload).forEach(key => {
+                state.basket[action.payload[key].name] = 0
             })
-            action.payload && action.payload.forEach(ing => {
-                state.prices[ing.name] = ing.price
+            action.payload && Object.keys(action.payload).forEach(key => {
+                state.prices[action.payload[key].name] = action.payload[key].price
             })
+            action.payload && Object.keys(action.payload).forEach(key => {
+                state.styles[action.payload[key].name] = action.payload[key].style
+            })
+        })
+        .addCase(addNewIngredient.pending, (state) => {
+            state.loading = true
+        })
+        .addCase(addNewIngredient.rejected, (state) => {
+            state.loading = false
+        })
+        .addCase(addNewIngredient.fulfilled, (state) => {
+            state.loading = false
         })
     }
 })

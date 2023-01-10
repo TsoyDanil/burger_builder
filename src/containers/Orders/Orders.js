@@ -5,24 +5,16 @@ import OrderItem from "../../components/Order/OrderItem/OrderItem";
 import WithErrorHandler from '../../hoc/WithErrorHandler';
 import { burgerInstance } from '../../api/instances';
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getOrders } from '../../store/orders.slice';
 
 
 const Orders = () => {
-    const [orders, setOrders] = useState({})
-    const [loading, setLoading] = useState(false);
-    
-    const getOrders = async () => {
-        setLoading(true)
-        try {
-            const response = await apiBurger.getOrders()
-            setOrders(response || {})
-        } finally {
-            setLoading(false)
-        }
-    }
+    const dispatch = useDispatch()
+    const {orders, loading} = useSelector(state => state.orders, shallowEqual)
     
     useEffect(() => {
-        getOrders()
+        dispatch(getOrders())
     }, [])
     return (
         <>

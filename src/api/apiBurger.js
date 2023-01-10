@@ -16,13 +16,20 @@ class ApiBurger {
             console.log(err)
         }
     }
-    getIngredients = async() => {
+    getIngredients = async () => {
         try {
             const response = await burgerInstance.get('/ingredients.json')
             return response?.data
         } catch (err) {
             console.log(err)
         } 
+    }
+    addIngredient = async (ingredient) => {
+        try {
+            await burgerInstance.post('/ingredients.json', ingredient)
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

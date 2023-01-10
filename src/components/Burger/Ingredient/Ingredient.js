@@ -1,7 +1,7 @@
 import React from 'react';
 import './Ingredient.css';
 
-const Ingredient = ({type}) => {
+const Ingredient = ({type, style}) => {
   switch (type) {
     case 'bread-bottom':
       return <div className='BreadBottom' />
@@ -13,7 +13,7 @@ const Ingredient = ({type}) => {
         </div>
       )
     default:
-      return <div className={type} />
+      return <div className={type} style={style} />
   }
 }
 

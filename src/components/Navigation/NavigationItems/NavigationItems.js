@@ -8,6 +8,8 @@ const NavigationItems = () => {
         <ul className={'NavigationItems'}>
             <NavigationItem to={'/'} end>Burger Builder</NavigationItem>
             <NavigationItem to={'/orders'} end>Orders</NavigationItem>
+            <NavigationItem to={'/add-ingredient'} end>Add ingredient</NavigationItem>
+            <NavigationItem to={'/ingredients'} end>Ingredients</NavigationItem>
         </ul>
     )
 }

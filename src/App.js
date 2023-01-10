@@ -7,6 +7,8 @@ import Orders from "./containers/Orders/Orders";
 import { getIngredients } from "./store/ingredients.slice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import AddIngredient from "./containers/AddIngredient/AddIngredient";
+import Ingredients from "./containers/Ingredients/Ingredients";
 
 function App() {
   const dispatch = useDispatch()
@@ -22,6 +24,8 @@ function App() {
                     <Route path='contact-data' element={<ContactData />} />
                 </Route>
                 <Route path={'/orders'} element={<Orders />} />
+                <Route path={'/add-ingredient'} element={<AddIngredient />} />
+                <Route path={'/ingredients'} element={<Ingredients />} />
                 <Route path='*' element={<div>NOT FOUND</div>} />
             </Route>
         </Routes>
