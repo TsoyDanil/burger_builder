@@ -31,6 +31,15 @@ class ApiBurger {
             console.log(err)
         }
     }
+    updateIngredient = async(id, ingredient) => {
+        try{
+            await burgerInstance.put('/ingredients/' + id + '.json', ingredient)
+        } catch(error){
+            console.log(error)
+        }
+    }
 }
+
+// `/tasks/${taskId}.json`
 
 export const apiBurger = new ApiBurger()

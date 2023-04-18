@@ -6,7 +6,7 @@ import BuildControls from '../../components/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
-import { addIngredient, removeIngredient } from '../../store/ingredients.slice';
+import { addIngredient, getIngredients, removeIngredient } from '../../store/ingredients.slice';
 
 const BurgerBuilder = () => {
   const dispatch = useDispatch()
@@ -57,6 +57,10 @@ const BurgerBuilder = () => {
   const purchaseContinueHandler = () => {
     navigate({pathname: '/checkout'})
   }
+
+  useEffect(()=> {
+    dispatch(getIngredients())
+  },[])
 
   return (
     <>

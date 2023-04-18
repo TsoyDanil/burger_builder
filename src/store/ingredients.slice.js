@@ -17,6 +17,14 @@ export const addNewIngredient = createAsyncThunk(
     }
 )
 
+export const updateIngredient = createAsyncThunk(
+    `${namespace}/updateIngredient`,
+    async (data, {dispatch}) => {
+        await apiBurger.updateIngredient(data.id, data.ingredient)
+        dispatch(getIngredients())
+    }
+)
+
 export const ingredientsSlice = createSlice({
     name: namespace,
     initialState: {
@@ -81,6 +89,15 @@ export const ingredientsSlice = createSlice({
             state.loading = false
         })
         .addCase(addNewIngredient.fulfilled, (state) => {
+            state.loading = false
+        })
+        .addCase(updateIngredient.pending, (state) => {
+            state.loading = true
+        })
+        .addCase(updateIngredient.rejected, (state) => {
+            state.loading = false
+        })
+        .addCase(updateIngredient.fulfilled, (state) => {
             state.loading = false
         })
     }
